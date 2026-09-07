@@ -1,0 +1,187 @@
+@import "./tokens.css";
+
+/* ------------------------------------------------------------------ *\
+   Reset
+\* ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* clip statt hidden: verhindert seitlichen Überlauf, ohne aus dem
+     Wurzelelement einen Scroll-Container zu machen. */
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  /* Die Grundfläche liegt bewusst auf <html>: nur so können Vignette und
+     Maus-Glow mit z-index -1 hinter dem Inhalt, aber über dem Grund liegen. */
+  background: var(--c-bg);
+}
+
+body {
+  min-height: 100svh;
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+label {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Headlines laufen in Archivo, schmal geschnitten und eng gesetzt. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 88;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--c-ember-300);
+  color: var(--c-bg-deep);
+}
+
+/* Sichtbarer, konsistenter Fokus für Tastaturbedienung. */
+:focus-visible {
+  outline: 2px solid var(--c-ember-300);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ------------------------------------------------------------------ *\
+   Atmosphäre: Vignette + feines Filmkorn
+\* ------------------------------------------------------------------ */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ *\
+   Wiederkehrende Layout-Bausteine
+\* ------------------------------------------------------------------ */
+
+.page {
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.measure {
+  max-width: var(--max-measure);
+  margin-inline: auto;
+}
+
+/* Kolumnentitel eines Kapitels. Bewusst in der Textschrift und nur leicht
+   gesperrt — gesperrte Versal-Mono an jeder Kleinigkeit ist genau der Griff,
+   der eine Seite nach Vorlage aussehen lässt. */
+.meta {
+  font-size: var(--t-meta);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--c-ink-faint);
+}
+
+/* Echte Datenauszeichnung: Quellen, Achsen, Messwerte. */
+.data {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--c-ink-faint);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 300;
+  padding: 0.625rem 1rem;
+  background: var(--c-ember-300);
+  color: var(--c-bg-deep);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

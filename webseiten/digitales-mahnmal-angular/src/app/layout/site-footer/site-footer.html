@@ -1,0 +1,44 @@
+<footer class="fuss surface-chalk inset">
+  <div class="fuss__zeile">
+    <p class="fuss__claim t-label">{{ footer.claim }}</p>
+
+    <nav class="fuss__nav" aria-label="Fußzeile">
+      @for (link of footer.links; track link.pfad) {
+        <a class="ghost-link" [routerLink]="link.pfad">{{ link.label }}</a>
+      }
+    </nav>
+  </div>
+
+  <hr class="hairline fuss__linie" />
+
+  <!-- CC BY und CC BY-SA verlangen Urheber und Lizenz je Bild. Deshalb eine
+       Liste statt einer Sammelzeile. -->
+  <div class="fuss__bildnachweis">
+    <p class="fuss__mikro t-micro">
+      {{ footer.bildnachweisLabel }} — {{ footer.bildnachweisEinleitung }}
+    </p>
+    <ul class="fuss__nachweise">
+      @for (n of footer.bildnachweisListe; track n.werk) {
+        <li class="fuss__mikro t-micro">
+          „{{ n.werk }}“ — {{ n.urheber }}, {{ n.lizenz }}
+        </li>
+      }
+    </ul>
+  </div>
+
+  <div class="fuss__zeile fuss__zeile--unten">
+    <!-- Da es keine Kopfzeile mehr gibt, ist der Markenname in der
+         Fusszeile der einzige Weg zurueck zur Startseite. -->
+    <p class="fuss__mikro t-micro">
+      <a class="ghost-link" routerLink="/">{{ marke.name }}</a> — {{ jahr }}
+    </p>
+
+    @if (!zahlenGeprueft) {
+      <!-- Der Hinweis verschwindet automatisch, sobald in content.ts alle
+           Kennzahlen auf geprueft: true stehen. -->
+      <p class="fuss__mikro fuss__mikro--warnung t-micro">
+        {{ footer.quellenHinweis }}
+      </p>
+    }
+  </div>
+</footer>

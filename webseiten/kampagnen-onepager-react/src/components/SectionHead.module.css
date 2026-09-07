@@ -1,0 +1,44 @@
+.head {
+  margin-bottom: clamp(3rem, 7vw, 5.5rem);
+}
+
+.ruleWrap {
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.rule {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid var(--c-line);
+}
+
+/* Kapitelnummer wie in einem Inhaltsverzeichnis. */
+.index {
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--c-accent);
+}
+
+.rule .meta {
+  flex: none;
+}
+
+.title {
+  max-width: 20ch;
+  margin-inline: auto;
+  font-size: var(--t-h2);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-align: center;
+}
+
+.lede {
+  max-width: 36rem;
+  margin: 1.75rem auto 0;
+  color: var(--c-ink-muted);
+  text-align: center;
+  text-wrap: balance;
+}

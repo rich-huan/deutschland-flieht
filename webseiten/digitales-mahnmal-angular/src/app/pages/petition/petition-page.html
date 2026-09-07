@@ -1,0 +1,326 @@
+<section class="pt surface-bone inset">
+  <header class="pt__kopf">
+    <h1 class="pt__titel">
+      <span class="pt__zeile">{{ inhalt.titelZeile1 }}</span>
+      <span class="pt__zeile t-italic">{{ inhalt.titelZeile2Kursiv }}</span>
+    </h1>
+    <p class="pt__einleitung">{{ inhalt.einleitung }}</p>
+
+    <p class="pt__zaehler">
+      <span class="pt__zaehler-wert">{{ zaehler() }}</span>
+      <span class="pt__zaehler-label t-micro">{{ inhalt.zaehlerLabel }}</span>
+      <span class="pt__zaehler-zusatz t-micro">{{ inhalt.zaehlerZusatz }}</span>
+    </p>
+  </header>
+
+  <div class="pt__spalten">
+    <!-- Linke Spalte: was unterschrieben wird, an wen es geht und was mit
+         den Daten passiert. Wer das nicht weiss, traegt nichts ein. -->
+    <div class="pt__doku">
+      <section class="pt__block" aria-labelledby="pt-empfaenger">
+        <h2 id="pt-empfaenger" class="pt__label t-micro">{{ inhalt.empfaenger.label }}</h2>
+        <p class="pt__block-text">{{ inhalt.empfaenger.text }}</p>
+      </section>
+
+      <hr class="hairline" />
+
+      <section class="pt__block" aria-labelledby="pt-text">
+        <h2 id="pt-text" class="pt__label t-micro">{{ inhalt.petitionstext.label }}</h2>
+        @for (absatz of inhalt.petitionstext.absaetze; track absatz) {
+          <p class="pt__block-text">{{ absatz }}</p>
+        }
+      </section>
+
+      <hr class="hairline" />
+
+      <section class="pt__block" aria-labelledby="pt-ford">
+        <h2 id="pt-ford" class="pt__label t-micro">{{ inhalt.forderungenLabel }}</h2>
+        <ul class="pt__liste">
+          @for (f of forderungen; track f.id) {
+            <li class="pt__forderung">
+              <h3 class="pt__forderung-titel">{{ f.titel }}</h3>
+              <p class="pt__forderung-text">{{ f.text }}</p>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <hr class="hairline" />
+
+      <section class="pt__block" aria-labelledby="pt-ablauf">
+        <h2 id="pt-ablauf" class="pt__label t-micro">{{ inhalt.ablauf.label }}</h2>
+        <ol class="pt__schritte">
+          @for (s of inhalt.ablauf.schritte; track s.titel; let i = $index) {
+            <li class="pt__schritt">
+              <span class="pt__schritt-nr t-micro" aria-hidden="true">{{ i + 1 }}</span>
+              <div class="pt__schritt-inhalt">
+                <h3 class="pt__schritt-titel">{{ s.titel }}</h3>
+                <p class="pt__schritt-text">{{ s.text }}</p>
+              </div>
+            </li>
+          }
+        </ol>
+      </section>
+    </div>
+
+    <!-- Rechte Spalte: das Formular. Laeuft auf breiten Schirmen mit. -->
+    <div class="pt__formularblock">
+      <div class="pt__karte">
+        @if (abgeschickt()) {
+          <div class="pt__quittung" role="status">
+            <h2 class="pt__quittung-titel">{{ inhalt.quittung.titel }}</h2>
+            <p class="pt__quittung-text">{{ inhalt.quittung.text }}</p>
+
+            <h3 class="pt__label t-micro">{{ inhalt.quittung.fehltTitel }}</h3>
+            <ul class="pt__quittung-liste">
+              @for (punkt of inhalt.quittung.fehlt; track punkt) {
+                <li class="pt__quittung-punkt">{{ punkt }}</li>
+              }
+            </ul>
+
+            <button class="pill" type="button" (click)="zurueckZumFormular()">
+              {{ inhalt.quittung.zurueck }}
+            </button>
+          </div>
+        } @else {
+          <form class="pt__formular" [formGroup]="formular" (ngSubmit)="absenden()" novalidate>
+            <header class="pt__formular-kopf">
+              <h2 class="pt__formular-titel">{{ inhalt.formular.titel }}</h2>
+              <p class="pt__formular-untertitel">{{ inhalt.formular.untertitel }}</p>
+            </header>
+
+            <!-- Sammelmeldung. Erscheint erst nach dem ersten Absendeversuch
+                 und fuehrt per Klick direkt zum betroffenen Feld. -->
+            @if (offeneFehler().length > 0) {
+              <div class="pt__fehlerbox" role="alert">
+                <p class="pt__fehlerbox-titel">{{ inhalt.fehlerUeberschrift }}</p>
+                <ul class="pt__fehlerbox-liste">
+                  @for (f of offeneFehler(); track f.feld) {
+                    <li>
+                      <button class="pt__fehlerbox-link" type="button" (click)="fokussieren(f.feld)">
+                        {{ f.text }}
+                      </button>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            <!-- --- Zur Person --------------------------------------------- -->
+            <div class="pt__gruppe">
+              <p class="pt__gruppe-label t-micro">{{ inhalt.formular.abschnittPerson }}</p>
+
+              <div class="pt__paar">
+                <div class="pt__feld">
+                  <label class="pt__feld-label t-micro" for="pt-vorname">
+                    {{ inhalt.formular.vorname }} <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="pt-vorname"
+                    class="pt__input"
+                    type="text"
+                    formControlName="vorname"
+                    autocomplete="given-name"
+                    required
+                    [class.ist-fehlerhaft]="fehler('vorname')"
+                    [attr.aria-invalid]="fehler('vorname') ? 'true' : null"
+                    [attr.aria-describedby]="fehler('vorname') ? 'pt-vorname-fehler' : null"
+                  />
+                  @if (fehler('vorname')) {
+                    <p id="pt-vorname-fehler" class="pt__fehler">{{ fehlerText('vorname') }}</p>
+                  }
+                </div>
+
+                <div class="pt__feld">
+                  <label class="pt__feld-label t-micro" for="pt-nachname">
+                    {{ inhalt.formular.nachname }} <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="pt-nachname"
+                    class="pt__input"
+                    type="text"
+                    formControlName="nachname"
+                    autocomplete="family-name"
+                    required
+                    [class.ist-fehlerhaft]="fehler('nachname')"
+                    [attr.aria-invalid]="fehler('nachname') ? 'true' : null"
+                    [attr.aria-describedby]="fehler('nachname') ? 'pt-nachname-fehler' : null"
+                  />
+                  @if (fehler('nachname')) {
+                    <p id="pt-nachname-fehler" class="pt__fehler">{{ fehlerText('nachname') }}</p>
+                  }
+                </div>
+              </div>
+
+              <div class="pt__feld">
+                <label class="pt__feld-label t-micro" for="pt-email">
+                  {{ inhalt.formular.email }} <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="pt-email"
+                  class="pt__input"
+                  type="email"
+                  formControlName="email"
+                  autocomplete="email"
+                  required
+                  [class.ist-fehlerhaft]="fehler('email')"
+                  [attr.aria-invalid]="fehler('email') ? 'true' : null"
+                  [attr.aria-describedby]="
+                    fehler('email') ? 'pt-email-fehler' : 'pt-email-hinweis'
+                  "
+                />
+                @if (fehler('email')) {
+                  <p id="pt-email-fehler" class="pt__fehler">{{ fehlerText('email') }}</p>
+                } @else {
+                  <p id="pt-email-hinweis" class="pt__feldhinweis">
+                    {{ inhalt.formular.emailHinweis }}
+                  </p>
+                }
+              </div>
+
+              <div class="pt__feld pt__feld--schmal">
+                <label class="pt__feld-label t-micro" for="pt-plz">
+                  {{ inhalt.formular.plz }} <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="pt-plz"
+                  class="pt__input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="5"
+                  formControlName="plz"
+                  autocomplete="postal-code"
+                  required
+                  [class.ist-fehlerhaft]="fehler('plz')"
+                  [attr.aria-invalid]="fehler('plz') ? 'true' : null"
+                  [attr.aria-describedby]="fehler('plz') ? 'pt-plz-fehler' : 'pt-plz-hinweis'"
+                />
+                @if (fehler('plz')) {
+                  <p id="pt-plz-fehler" class="pt__fehler">{{ fehlerText('plz') }}</p>
+                } @else {
+                  <p id="pt-plz-hinweis" class="pt__feldhinweis">
+                    {{ inhalt.formular.plzHinweis }}
+                  </p>
+                }
+              </div>
+            </div>
+
+            <!-- --- Motiv (freiwillig) ------------------------------------- -->
+            <div class="pt__gruppe">
+              <p class="pt__gruppe-label t-micro">{{ inhalt.formular.abschnittMotiv }}</p>
+
+              <fieldset class="pt__motive">
+                <legend class="pt__feld-label t-micro">{{ inhalt.formular.grundLabel }}</legend>
+                <p class="pt__feldhinweis">{{ inhalt.formular.grundHinweis }}</p>
+
+                @if (ausQuiz) {
+                  <p class="pt__quizhinweis">{{ inhalt.formular.grundAusQuiz }}</p>
+                }
+
+                <ul class="pt__chips">
+                  @for (o of motivOptionen; track o.id) {
+                    <li>
+                      <label class="pt__chip" [class.ist-gewaehlt]="istMotiv(o.id)">
+                        <input
+                          class="pt__chip-eingabe sr-only"
+                          type="checkbox"
+                          [checked]="istMotiv(o.id)"
+                          (change)="motivUmschalten(o.id)"
+                        />
+                        <span>{{ o.label }}</span>
+                      </label>
+                    </li>
+                  }
+                </ul>
+              </fieldset>
+
+              <div class="pt__feld">
+                <label class="pt__feld-label t-micro" for="pt-geschichte">
+                  {{ inhalt.formular.geschichte }}
+                </label>
+                <p class="pt__feldhinweis">{{ inhalt.formular.geschichteHinweis }}</p>
+                <textarea
+                  id="pt-geschichte"
+                  class="pt__input pt__textarea"
+                  rows="5"
+                  maxlength="1200"
+                  formControlName="geschichte"
+                  [placeholder]="inhalt.formular.geschichtePlatzhalter"
+                ></textarea>
+                <p class="pt__zeichen t-micro" aria-hidden="true">
+                  {{ verbleibend() }} Zeichen frei
+                </p>
+              </div>
+            </div>
+
+            <!-- --- Einwilligung -------------------------------------------- -->
+            <div class="pt__gruppe">
+              <p class="pt__gruppe-label t-micro">{{ inhalt.formular.abschnittEinwilligung }}</p>
+
+              <div class="pt__feld">
+                <label class="pt__haken" [class.ist-fehlerhaft]="fehler('einwilligung')">
+                  <input
+                    id="pt-einwilligung"
+                    class="pt__checkbox"
+                    type="checkbox"
+                    formControlName="einwilligung"
+                    required
+                    [attr.aria-invalid]="fehler('einwilligung') ? 'true' : null"
+                    [attr.aria-describedby]="
+                      fehler('einwilligung') ? 'pt-einwilligung-fehler' : null
+                    "
+                  />
+                  <span class="pt__haken-text">
+                    {{ inhalt.formular.einwilligung }} <span aria-hidden="true">*</span>
+                  </span>
+                </label>
+                @if (fehler('einwilligung')) {
+                  <p id="pt-einwilligung-fehler" class="pt__fehler">
+                    {{ fehlerText('einwilligung') }}
+                  </p>
+                }
+              </div>
+
+              <label class="pt__haken">
+                <input class="pt__checkbox" type="checkbox" formControlName="oeffentlich" />
+                <span class="pt__haken-text">{{ inhalt.formular.oeffentlich }}</span>
+              </label>
+
+              <label class="pt__haken">
+                <input class="pt__checkbox" type="checkbox" formControlName="updates" />
+                <span class="pt__haken-text">{{ inhalt.formular.updates }}</span>
+              </label>
+            </div>
+
+            <!-- Honigtopf gegen automatische Eintraege: fuer Menschen weder
+                 sichtbar noch erreichbar. Ersetzt keinen serverseitigen
+                 Schutz, kostet aber nichts. -->
+            <div class="pt__honig" aria-hidden="true">
+              <label for="pt-webseite">Website (bitte frei lassen)</label>
+              <input
+                id="pt-webseite"
+                type="text"
+                formControlName="webseite"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="pt__abschluss">
+              <button class="pill pt__absenden" type="submit">
+                {{ inhalt.formular.absenden }}
+              </button>
+
+              <p class="pt__datenschutz">
+                {{ inhalt.formular.datenschutzHinweis }}
+                <a class="ghost-link" routerLink="/datenschutz">Datenschutzerklärung</a>
+              </p>
+            </div>
+
+            <p class="pt__hinweis t-micro">{{ inhalt.hinweisOhneBackend }}</p>
+          </form>
+        }
+      </div>
+    </div>
+  </div>
+</section>

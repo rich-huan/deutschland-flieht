@@ -1,0 +1,79 @@
+<section class="fh surface-ink" aria-labelledby="fh-titel">
+  <div class="fh__pin">
+    <!-- Ebene 1: gestapelte Lettern -->
+    <div class="fh__lettern" aria-hidden="true">
+      <div class="fh__spalte" [style.transform]="'translateY(' + letternVersatz() + '%)'">
+        @for (b of buchstaben; track $index) {
+          <span class="fh__buchstabe">{{ b }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Ebene 2: Wireframe-Raster -->
+    <svg
+      class="fh__raster"
+      viewBox="0 0 1600 1000"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <!-- Das Netz spannt sich vom Mittelpunkt (800,500) bis ueber die
+           Bildraender hinaus. Alle Speichen sind bewusst dort beginnend
+           gezeichnet: nur so laeuft der Lichtimpuls von innen nach aussen
+           und nicht umgekehrt. -->
+      <g class="fh__linien">
+        <polyline points="800,500 800,80 800,0" />
+        <polyline points="800,500 800,920 800,1000" />
+        <polyline points="800,500 1480,500 1600,500" />
+        <polyline points="800,500 120,500 0,500" />
+        <polyline points="800,500 1240,270 1600,80" />
+        <polyline points="800,500 360,270 0,80" />
+        <polyline points="800,500 1240,730 1600,920" />
+        <polyline points="800,500 360,730 0,920" />
+        <polygon points="800,80 1480,500 800,920 120,500" />
+      </g>
+
+      <!-- Lichtimpulse: dieselben Speichen noch einmal, als kurzes helles
+           Segment, das per Strichmuster nach aussen wandert. Verschiedene
+           Dauern und Startzeiten, damit kein Gleichtakt entsteht. -->
+      <g class="fh__puls">
+        <polyline class="fh__impuls fh__impuls--a" points="800,500 800,80 800,0" />
+        <polyline class="fh__impuls fh__impuls--b" points="800,500 800,920 800,1000" />
+        <polyline class="fh__impuls fh__impuls--c" points="800,500 1480,500 1600,500" />
+        <polyline class="fh__impuls fh__impuls--d" points="800,500 120,500 0,500" />
+        <polyline class="fh__impuls fh__impuls--e" points="800,500 1240,270 1600,80" />
+        <polyline class="fh__impuls fh__impuls--f" points="800,500 360,270 0,80" />
+        <polyline class="fh__impuls fh__impuls--g" points="800,500 1240,730 1600,920" />
+        <polyline class="fh__impuls fh__impuls--h" points="800,500 360,730 0,920" />
+      </g>
+
+      <g class="fh__knoten">
+        <!-- Hexagone als Sekundaergeometrie des Systems -->
+        <polygon points="800,488 810,494 810,506 800,512 790,506 790,494" />
+        <polygon points="800,68 810,74 810,86 800,92 790,86 790,74" />
+        <polygon points="800,908 810,914 810,926 800,932 790,926 790,914" />
+        <polygon points="1480,488 1490,494 1490,506 1480,512 1470,506 1470,494" />
+        <polygon points="120,488 130,494 130,506 120,512 110,506 110,494" />
+        <polygon points="1240,258 1250,264 1250,276 1240,282 1230,276 1230,264" />
+        <polygon points="360,258 370,264 370,276 360,282 350,276 350,264" />
+        <polygon points="1240,718 1250,724 1250,736 1240,742 1230,736 1230,724" />
+        <polygon points="360,718 370,724 370,736 360,742 350,736 350,724" />
+      </g>
+    </svg>
+
+    <!-- Ebene 3: Aufhellung hinter der Fahne, damit sie sich vom schwarzen
+         Raum abhebt statt darin zu versinken. -->
+    <div class="fh__schein" aria-hidden="true"></div>
+
+    <!-- Ebene 4: die Fahne -->
+    <div class="fh__canvas">
+      <app-fahnen-canvas [fortschritt]="fortschritt()" [beschreibung]="inhalt.ariaBeschreibung" />
+    </div>
+
+    <!-- Bewusst ohne sichtbare Bildunterschrift: das Bild traegt die Aussage
+         allein, jeder Text stand hier nur schlecht platziert im Weg.
+         Die Ueberschrift bleibt fuer Screenreader erhalten, damit die
+         Sektion benannt bleibt. -->
+    <h2 id="fh-titel" class="sr-only">Eine Fahne, die verschleißt</h2>
+  </div>
+</section>

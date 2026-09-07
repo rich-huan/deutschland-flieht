@@ -1,0 +1,571 @@
+@use 'mixins' as *;
+
+/* ==========================================================================
+   Petitionsseite
+
+   Zwei Spalten: links die Sache, rechts das Formular. Das Formular sitzt in
+   einer Papierkarte auf Bone — die einzige Stelle der Seite, an der Weiss
+   auftaucht. Das ist Absicht: Papier ist hier das, worauf unterschrieben
+   wird, und es zieht den Blick genau dorthin.
+   ========================================================================== */
+
+.pt {
+  padding-block: var(--spacing-168) var(--spacing-96);
+  min-height: 100svh;
+}
+
+/* --- Kopf ----------------------------------------------------------------- */
+
+/* Der Kopf steht mittig wie auf der Startseite; erst darunter beginnt die
+   zweispaltige Arbeitsflaeche. Formularfelder bleiben linksbuendig — ein
+   zentriertes Formular ist schoen und unbenutzbar. */
+.pt__kopf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-20);
+  margin: 0 auto var(--spacing-96);
+  max-width: 68ch;
+}
+
+.pt__titel {
+  margin: 0;
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-section-fluid);
+  line-height: var(--leading-section);
+  letter-spacing: -0.009em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pt__zeile {
+  display: block;
+}
+
+.pt__einleitung {
+  @include grotesk-body;
+  max-width: 58ch;
+  color: var(--color-graphite);
+  margin: 0;
+}
+
+.pt__zaehler {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-16);
+  margin: var(--spacing-16) 0 0;
+}
+
+.pt__zaehler-wert {
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-medium);
+  font-size: clamp(34px, 3.25vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.009em;
+}
+
+.pt__zaehler-label {
+  color: var(--color-graphite);
+  letter-spacing: 0.14em;
+}
+
+/* Der Zaehler steht auf null. Ohne diese Zeile liest sich das wie ein
+   Fehler statt wie eine Auskunft. */
+.pt__zaehler-zusatz {
+  color: var(--color-ash);
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+/* --- Zweispalter ---------------------------------------------------------- */
+
+.pt__spalten {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: var(--spacing-96);
+  align-items: start;
+}
+
+.pt__label {
+  color: var(--color-graphite);
+  letter-spacing: 0.16em;
+  margin: 0;
+}
+
+/* --- Linke Spalte --------------------------------------------------------- */
+
+.pt__doku {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-40);
+
+  hr {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.pt__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.pt__block-text {
+  @include grotesk-body;
+  color: var(--color-graphite);
+  margin: 0;
+  max-width: 60ch;
+}
+
+.pt__liste {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-28);
+  margin: 0;
+}
+
+.pt__forderung-titel {
+  margin: 0 0 var(--spacing-4);
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: clamp(22px, 1.7vw, 26px);
+  line-height: 1.2;
+}
+
+.pt__forderung-text {
+  @include grotesk-label;
+  color: var(--color-graphite);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Der Weg der Daten, nummeriert. Die Ziffern sind Serif — dieselbe Rolle
+   wie die Kennzahlen: ein Wert, kein Fliesstext. */
+.pt__schritte {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20);
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.pt__schritt {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-16);
+}
+
+.pt__schritt-nr {
+  flex: 0 0 auto;
+  min-width: 1.4em;
+  font-family: var(--font-davinci);
+  font-size: 15px;
+  color: var(--color-ash);
+  letter-spacing: 0;
+}
+
+.pt__schritt-inhalt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.pt__schritt-titel {
+  @include grotesk-stat;
+  margin: 0;
+}
+
+.pt__schritt-text {
+  @include grotesk-label;
+  color: var(--color-graphite);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
+/* --- Rechte Spalte: die Karte --------------------------------------------- */
+
+/* Bewusst nicht klebend: die Karte ist deutlich hoeher als der Viewport.
+   Ein sticky-Element in dieser Groesse bleibt oben haengen und sein unteres
+   Ende waere nicht mehr erreichbar. */
+.pt__formularblock {
+  position: static;
+}
+
+.pt__karte {
+  background: var(--color-paper);
+  border: 1px solid var(--color-vellum);
+  border-radius: var(--radius-cards);
+  padding: var(--spacing-40);
+}
+
+.pt__formular {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-32);
+}
+
+.pt__formular-kopf {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.pt__formular-titel {
+  margin: 0;
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: clamp(26px, 2.125vw, 34px);
+  line-height: 1.1;
+}
+
+.pt__formular-untertitel {
+  @include grotesk-label;
+  color: var(--color-graphite);
+  margin: 0;
+}
+
+/* --- Sammelmeldung -------------------------------------------------------- */
+
+.pt__fehlerbox {
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-links);
+  padding: var(--spacing-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.pt__fehlerbox-titel {
+  @include grotesk-stat;
+  margin: 0;
+}
+
+.pt__fehlerbox-liste {
+  margin: 0;
+  padding-left: var(--spacing-16);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pt__fehlerbox-link {
+  @include grotesk-label;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--color-graphite);
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: var(--color-ink);
+  }
+}
+
+/* --- Gruppen und Felder --------------------------------------------------- */
+
+.pt__gruppe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20);
+  padding-top: var(--spacing-20);
+  border-top: 1px solid var(--color-vellum);
+}
+
+.pt__gruppe-label {
+  color: var(--color-ash);
+  letter-spacing: 0.18em;
+  margin: 0;
+}
+
+.pt__paar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-20);
+}
+
+.pt__feld {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.pt__feld--schmal {
+  max-width: 200px;
+}
+
+.pt__feld-label {
+  color: var(--color-graphite);
+  letter-spacing: 0.12em;
+  padding: 0;
+}
+
+.pt__feldhinweis {
+  @include grotesk-label;
+  color: var(--color-ash);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pt__input {
+  background: var(--color-paper);
+  border: 1px solid var(--color-vellum);
+  border-radius: var(--radius-links);
+  padding: 12px 13px;
+  @include grotesk-body;
+  color: var(--color-ink);
+  width: 100%;
+  transition: border-color var(--duration-fast) var(--ease-gallery);
+
+  &::placeholder {
+    color: var(--color-ash);
+  }
+
+  &:hover {
+    border-color: var(--color-ash);
+  }
+
+  /* Ein Feld im Fokus bekommt eine doppelte Linie statt eines Leuchtens —
+     das System kennt keine Schatten. */
+  &:focus-visible {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-ink);
+  }
+
+  &.ist-fehlerhaft {
+    border-color: var(--color-ink);
+    border-left-width: 3px;
+  }
+}
+
+.pt__textarea {
+  resize: vertical;
+  min-height: 130px;
+  line-height: 1.6;
+}
+
+.pt__zeichen {
+  color: var(--color-ash);
+  letter-spacing: 0.06em;
+  align-self: flex-end;
+  text-transform: none;
+  margin: 0;
+}
+
+.pt__fehler {
+  @include grotesk-label;
+  color: var(--color-ink);
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+/* --- Motiv-Schalter ------------------------------------------------------- */
+
+.pt__motive {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.pt__quizhinweis {
+  @include grotesk-label;
+  color: var(--color-graphite);
+  border-left: 1px solid var(--color-ink);
+  padding-left: 10px;
+  margin: var(--spacing-4) 0 0;
+  line-height: 1.5;
+}
+
+.pt__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  margin: var(--spacing-16) 0 0;
+}
+
+.pt__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid var(--color-vellum);
+  border-radius: var(--radius-buttons);
+  @include grotesk-label;
+  color: var(--color-graphite);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-gallery),
+    background var(--duration-fast) var(--ease-gallery),
+    color var(--duration-fast) var(--ease-gallery);
+
+  &:hover {
+    border-color: var(--color-ash);
+  }
+
+  /* Gewaehlt heisst gefuellt — derselbe Zustand wie beim Pill-Button, damit
+     man ihn nicht erst lernen muss. */
+  &.ist-gewaehlt {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  &:has(.pt__chip-eingabe:focus-visible) {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+/* --- Einwilligungen ------------------------------------------------------- */
+
+.pt__haken {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-16);
+  cursor: pointer;
+
+  &.ist-fehlerhaft .pt__haken-text {
+    color: var(--color-ink);
+  }
+}
+
+.pt__checkbox {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-ink);
+  flex-shrink: 0;
+}
+
+.pt__haken-text {
+  @include grotesk-label;
+  color: var(--color-graphite);
+  line-height: 1.6;
+}
+
+/* Honigtopf: nicht `display: none`, sonst fuellen ihn manche Bots gar nicht
+   erst aus. Stattdessen aus dem Bild geschoben. */
+.pt__honig {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* --- Abschluss des Formulars ---------------------------------------------- */
+
+.pt__abschluss {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  padding-top: var(--spacing-20);
+  border-top: 1px solid var(--color-vellum);
+}
+
+.pt__absenden {
+  align-self: flex-start;
+}
+
+.pt__datenschutz {
+  @include grotesk-label;
+  color: var(--color-ash);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 54ch;
+
+  a {
+    color: var(--color-graphite);
+  }
+}
+
+.pt__hinweis {
+  color: var(--color-graphite);
+  border: 1px solid var(--color-vellum);
+  border-radius: var(--radius-links);
+  padding: 10px 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- Quittung ------------------------------------------------------------- */
+
+.pt__quittung {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+}
+
+.pt__quittung-titel {
+  margin: 0;
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: clamp(26px, 2.125vw, 34px);
+  line-height: 1.1;
+}
+
+.pt__quittung-text {
+  @include grotesk-body;
+  color: var(--color-graphite);
+  margin: 0;
+}
+
+.pt__quittung-liste {
+  margin: 0;
+  padding-left: var(--spacing-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.pt__quittung-punkt {
+  @include grotesk-label;
+  color: var(--color-graphite);
+  line-height: 1.6;
+}
+
+/* --- Schmale Ansicht ------------------------------------------------------ */
+
+@include tablet {
+  .pt {
+    padding-block: var(--spacing-96) var(--spacing-60);
+  }
+
+  .pt__spalten {
+    /* Auf schmalen Schirmen zuerst das Formular, dann die Erlaeuterung:
+       wer hier landet, kommt in der Regel schon entschlossen an. */
+    grid-template-columns: 1fr;
+    gap: var(--spacing-60);
+  }
+
+  .pt__formularblock {
+    position: static;
+    order: -1;
+  }
+
+  .pt__kopf {
+    margin-bottom: var(--spacing-60);
+  }
+
+  .pt__paar {
+    grid-template-columns: 1fr;
+  }
+
+  .pt__karte {
+    padding: var(--spacing-28) var(--spacing-20);
+  }
+}

@@ -1,0 +1,95 @@
+.section {
+  padding-block: var(--space-section);
+}
+
+.list {
+  max-width: 46rem;
+  margin-inline: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  border-top: 1px solid var(--c-line);
+  opacity: 0.45;
+  transition: opacity 550ms var(--ease-out);
+}
+
+/* Wer mehr Kontrast angefordert hat, bekommt alle Einträge voll lesbar. */
+@media (prefers-contrast: more) {
+  .item {
+    opacity: 1;
+  }
+}
+
+.item:last-child {
+  border-bottom: 1px solid var(--c-line);
+}
+
+.item[data-active] {
+  opacity: 1;
+}
+
+/* Kurzes Glutstück, das über die Trennlinie des aktiven Eintrags läuft. */
+.item::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 3.5rem;
+  height: 1px;
+  background: var(--c-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 650ms var(--ease-out);
+}
+
+.item[data-focused]::before {
+  transform: scaleX(1);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0 1.5rem;
+  padding-block: clamp(2rem, 5vw, 3.25rem);
+}
+
+.index {
+  font-size: var(--t-meta);
+  font-weight: 600;
+  line-height: 2.4;
+  color: var(--c-ink-faint);
+  transition: color 550ms var(--ease-out);
+}
+
+.item[data-focused] .index {
+  color: var(--c-accent);
+}
+
+.text {
+  max-width: 32rem;
+}
+
+.title {
+  font-size: var(--t-h3);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.body {
+  margin-top: 0.75rem;
+  color: var(--c-ink-muted);
+}
+
+@media (width < 40rem) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+
+  .index {
+    line-height: 1;
+  }
+}

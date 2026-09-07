@@ -1,0 +1,176 @@
+.section {
+  padding-block: var(--space-section);
+  border-top: 1px solid var(--c-line);
+}
+
+.figure {
+  max-width: 58rem;
+  margin: 0 auto;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+  font-size: var(--t-meta);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--c-ink-muted);
+}
+
+.swatch {
+  width: 1.125rem;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--c-chart-1);
+}
+
+.plotWrap {
+  position: relative;
+}
+
+.plot {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.grid {
+  stroke: var(--c-line);
+  stroke-width: 1;
+}
+
+.axis {
+  fill: var(--c-ink-faint);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.area {
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out) 700ms;
+}
+
+.figure[data-visible] .area {
+  opacity: 1;
+}
+
+/* Die Linie zeichnet sich beim Erscheinen selbst. */
+.line {
+  fill: none;
+  stroke: var(--c-chart-1);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+  transition: stroke-dashoffset 1.8s var(--ease-out) 200ms;
+}
+
+.figure[data-visible] .line {
+  stroke-dashoffset: 0;
+}
+
+.dot {
+  fill: var(--c-bg);
+  stroke: var(--c-chart-1);
+  stroke-width: 2;
+  opacity: 0;
+  transition:
+    opacity 400ms var(--ease-out),
+    r 200ms var(--ease-out),
+    fill 200ms var(--ease-out);
+}
+
+.figure[data-visible] .dot {
+  opacity: 1;
+}
+
+.dot[data-active] {
+  fill: var(--c-chart-1);
+}
+
+.crosshair {
+  stroke: var(--c-line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.hit {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.endLabel {
+  fill: var(--c-ember-100);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out) 1.9s;
+}
+
+.figure[data-visible] .endLabel {
+  opacity: 1;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 3px;
+  background: rgb(6 5 5 / 94%);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(-50%, calc(-100% - 0.875rem));
+}
+
+.tooltipYear {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  color: var(--c-ink-faint);
+}
+
+.tooltipValue {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--c-ink);
+}
+
+.source {
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--c-ink-faint);
+  text-align: right;
+}
+
+@media (width < 40rem) {
+  /* Auf schmalen Displays bleibt nur jedes zweite Jahr an der Achse. */
+  .axis[data-dense] {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+
+  .area,
+  .dot,
+  .endLabel {
+    opacity: 1;
+    transition: none;
+  }
+}

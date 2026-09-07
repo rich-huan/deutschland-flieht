@@ -1,0 +1,45 @@
+.horizon {
+  position: absolute;
+  inset: auto 0 0;
+  height: clamp(11rem, 30vh, 22rem);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Ruhiges Grundlicht am Horizont — bleibt auch ohne Animation stehen. */
+.glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      68% 78% at 34% 108%,
+      rgb(255 122 26 / 22%),
+      rgb(255 122 26 / 0%) 68%
+    ),
+    radial-gradient(
+      54% 70% at 79% 106%,
+      rgb(226 78 8 / 18%),
+      rgb(226 78 8 / 0%) 70%
+    ),
+    linear-gradient(to top, rgb(122 34 2 / 26%), rgb(122 34 2 / 0%) 58%);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Dunstschleier über der Stadt, damit die Silhouette in die Tiefe abfällt. */
+.haze {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgb(11 9 8 / 0%) 0%,
+    rgb(11 9 8 / 34%) 38%,
+    rgb(11 9 8 / 82%) 68%,
+    var(--c-bg) 88%
+  );
+}

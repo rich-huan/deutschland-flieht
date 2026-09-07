@@ -1,0 +1,158 @@
+@use 'mixins' as *;
+
+.fh {
+  position: relative;
+  /* Scrollstrecke fuer den Zerfall — genug Weg, damit der Uebergang von
+     sauber zu zerschlissen als Vorgang und nicht als Umschalten wirkt,
+     aber nicht so viel, dass leere schwarze Strecken entstehen. */
+  height: 260svh;
+}
+
+.fh__pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--surface-ink-room);
+}
+
+/* --- Ebene 1: Lettern ----------------------------------------------------- */
+
+.fh__lettern {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fh__spalte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Die Spalte ist so hoch wie ihre Lettern; sie faehrt beim Scrollen
+     nach oben durch den Ausschnitt. */
+  will-change: transform;
+}
+
+.fh__buchstabe {
+  display: block;
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: clamp(140px, 26vw, 400px);
+  line-height: 0.92;
+  letter-spacing: -0.009em;
+  color: var(--color-putty);
+  /* Die Lettern sind Kulisse, nicht Text — sie duerfen die Fahne nicht
+     ueberstrahlen. */
+  opacity: 0.9;
+}
+
+/* --- Ebene 2: Raster ------------------------------------------------------ */
+
+.fh__raster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fh__linien {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.fh__knoten {
+  fill: rgba(255, 255, 255, 0.10);
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* --- Lichtimpulse ---------------------------------------------------------
+   Ein kurzes helles Strichsegment wandert die Bahn entlang. Umgesetzt ueber
+   ein Strichmuster aus einem sichtbaren und einem sehr langen unsichtbaren
+   Teil; animiert wird nur der Versatz, das laeuft auf dem Compositor.
+   Die Bahnlaengen sind unterschiedlich, deshalb hat jede Linie ihr eigenes
+   Muster und ihre eigene Dauer. */
+
+.fh__puls {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+
+.fh__impuls {
+  opacity: 0;
+}
+
+@include motion-safe {
+  .fh__impuls {
+    opacity: 1;
+    animation-name: impuls-wandern;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  /* Alle Speichen tragen dasselbe Muster: ein kurzer Strich, dann eine
+     Luecke, die laenger ist als jede Bahn — so ist immer nur ein Impuls
+     unterwegs. Unterschiedlich sind nur Tempo und Startzeit. */
+  .fh__impuls {
+    stroke-dasharray: 75 1700;
+  }
+
+  .fh__impuls--a { animation-duration: 5.4s; animation-delay: 0s; }
+  .fh__impuls--b { animation-duration: 5.4s; animation-delay: 0.3s; }
+  .fh__impuls--c { animation-duration: 6.2s; animation-delay: 1.1s; }
+  .fh__impuls--d { animation-duration: 6.2s; animation-delay: 1.4s; }
+  .fh__impuls--e { animation-duration: 4.8s; animation-delay: 2.2s; }
+  .fh__impuls--f { animation-duration: 4.8s; animation-delay: 2.5s; }
+  .fh__impuls--g { animation-duration: 5.9s; animation-delay: 3.3s; }
+  .fh__impuls--h { animation-duration: 5.9s; animation-delay: 3.6s; }
+}
+
+/* Der Versatz laeuft ins Negative, dadurch wandert der Strich in
+   Zeichenrichtung der Bahn — und die beginnt bei allen im Mittelpunkt.
+   Der Impuls laeuft also von der Fahne weg nach aussen. */
+@keyframes impuls-wandern {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1775;
+  }
+}
+
+/* --- Aufhellung ----------------------------------------------------------
+   Ein weicher Lichtraum in Putty hinter dem Band. Ohne ihn steht die dunkle
+   Fahne auf schwarzem Grund und verliert ihre Kontur. Bewusst sehr weich
+   und tonal — die Flaeche bleibt Ink, sie wird nur belichtet. */
+
+.fh__schein {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Neutral-warmer Ton statt Putty — Putty wuerde hier gruenlich aufhellen. */
+  background:
+    radial-gradient(
+      68% 46% at 50% 52%,
+      rgba(231, 229, 228, 0.22) 0%,
+      rgba(231, 229, 228, 0.10) 42%,
+      rgba(231, 229, 228, 0) 72%
+    );
+}
+
+/* --- Fahne ---------------------------------------------------------------- */
+
+.fh__canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Die Sektion traegt bewusst keinen sichtbaren Text — Fahne, Lettern und
+   Raster stehen fuer sich. */

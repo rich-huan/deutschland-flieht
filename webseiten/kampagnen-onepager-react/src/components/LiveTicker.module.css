@@ -1,0 +1,73 @@
+.ticker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.875rem, 2vw, 1.25rem);
+}
+
+.status {
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: var(--t-meta);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.live {
+  color: var(--c-ink-muted);
+}
+
+.demo {
+  color: var(--c-ink-faint);
+}
+
+.divider {
+  width: 1px;
+  height: 0.75rem;
+  background: var(--c-line-strong);
+}
+
+.dot {
+  position: relative;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: var(--c-ember-300);
+}
+
+/* Ruhiger Puls — ein Ring, der langsam nach außen ausläuft. */
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgb(255 138 31 / 55%);
+  animation: ticker-pulse 2.8s var(--ease-out) infinite;
+}
+
+@keyframes ticker-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(255 138 31 / 45%);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 0.5rem rgb(255 138 31 / 0%);
+  }
+}
+
+.value {
+  /* Die Zahl bleibt auch auf sehr schmalen Displays vollständig sichtbar. */
+  max-width: 100%;
+}
+
+.caption {
+  max-width: 26rem;
+  font-size: clamp(0.875rem, 1.6vw, 1rem);
+  line-height: 1.5;
+  color: var(--c-ink-muted);
+  text-align: center;
+  text-wrap: balance;
+}

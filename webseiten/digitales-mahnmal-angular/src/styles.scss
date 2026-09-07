@@ -1,0 +1,10 @@
+/* =========================================================================
+   "Deutschland flieht." — globale Styles
+   Reihenfolge: Schriften, Tokens, Reset, Basis.
+   Komponentenstyles liegen bei den Komponenten und nutzen @use 'mixins'.
+   ========================================================================= */
+
+@use 'styles/fonts';
+@use 'styles/tokens';
+@use 'styles/reset';
+@use 'styles/base';

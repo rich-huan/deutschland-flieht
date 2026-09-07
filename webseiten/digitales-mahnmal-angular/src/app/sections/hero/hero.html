@@ -1,0 +1,52 @@
+<!-- Bone statt Putty: Putty (#c4c3b6) hat einen deutlichen Gruenstich und
+     ist dunkler, als der Hero der Vorlage tatsaechlich ist. Bone (#e7e5e4)
+     ist hell und praktisch neutral. -->
+<section class="hero surface-bone">
+  <!-- Eichenkronen in den oberen Ecken. Rein dekorativ, deshalb ohne
+       Alternativtext und fuer Screenreader ausgeblendet. Gemaltes Laub
+       ueber einer Nachtaufnahme ist ein bewusster Bruch. -->
+  <img
+    class="hero__eiche hero__eiche--links"
+    [src]="hero.eicheLinks.pfad"
+    alt=""
+    aria-hidden="true"
+    decoding="async"
+  />
+  <img
+    class="hero__eiche hero__eiche--rechts"
+    [src]="hero.eicheRechts.pfad"
+    alt=""
+    aria-hidden="true"
+    decoding="async"
+  />
+
+  <div class="hero__cluster inset">
+    <p class="hero__claim">
+      <span class="hero__claim-zeile">{{ hero.zeile1 }}</span>
+      <span class="hero__claim-zeile t-italic">{{ hero.zeile2Kursiv }}</span>
+    </p>
+
+    <!-- Stat-Pair: zwei Wertepaare nebeneinander, ohne Rahmen, ohne Flaeche. -->
+    <dl class="hero__stats">
+      @for (k of hero.stats; track k.label) {
+        <div class="hero__stat">
+          <dt class="hero__stat-label">{{ k.kurzLabel }}:</dt>
+          <dd class="hero__stat-wert"><app-zaehlwert [wert]="k.wert" [dauer]="1600" /></dd>
+        </div>
+      }
+    </dl>
+  </div>
+
+  <!-- Die Wortmarke traegt den Seitentitel. Sie ruht auf der Oberkante des
+       Gemaeldes und sinkt beim Scrollen dahinter weg. -->
+  <h1 class="hero__marke" [style.transform]="'translateY(' + markeVersatz() + 'px)'">
+    <span class="hero__wort">{{ marke.wortmarke }}</span>
+    <span class="hero__verb t-italic">{{ marke.wortmarkeVerb }}</span>
+  </h1>
+
+  <!-- Das Gemaelde traegt die untere Bildhaelfte; die Wortmarke steigt
+       daraus auf. Bewusst hoch geladen, es ist das erste sichtbare Bild. -->
+  <div class="hero__bild">
+    <img [src]="hero.bild.pfad" [alt]="hero.bild.alt" fetchpriority="high" decoding="async" />
+  </div>
+</section>

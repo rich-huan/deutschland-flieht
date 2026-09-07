@@ -1,0 +1,105 @@
+/**
+ * Design-Tokens der Kampagne „Deutschland flieht.“
+ *
+ * Die Seite hat zwei Flächen, keine einzige:
+ *
+ *   NACHT   Hero, Stimmen, Manifest, Fuß — Industriestadt, Feuer, Glut.
+ *   PAPIER  die Kapitel dazwischen — warmes Zeitungspapier, schwarze Schrift.
+ *
+ * Der Wechsel gibt der Seite ihren Rhythmus. Alle Bausteine lesen dieselben
+ * Token, deshalb genügt `data-surface="paper"` an einem Abschnitt, damit
+ * Linien, Schrift, Akzent und Diagrammfarben mitwechseln.
+ */
+
+:root {
+  /* --- NACHT (Standard) --- */
+  --c-bg: #0b0908;
+  --c-bg-lift: #12100e;
+  --c-bg-deep: #060505;
+
+  --c-ink: #f2efea;
+  --c-ink-muted: #a9a29b;
+  --c-ink-faint: #7d7670;
+
+  --c-line: rgb(242 239 234 / 12%);
+  --c-line-strong: rgb(242 239 234 / 26%);
+
+  /* Akzent und Diagrammfarben wechseln mit der Fläche. */
+  --c-accent: #ff8a1f;
+  --c-accent-fill: #ff8a1f;
+  --c-accent-on-fill: #0b0908;
+  --c-chart-1: #f2600c;
+  --c-chart-2: #3e9bd1;
+  /* Für Glut-Schimmer, die eine Alpha-Angabe brauchen. */
+  --c-pulse-rgb: 255 138 31;
+
+  --c-alert: #ff6b5a;
+
+  /* --- Glut-Skala: fest, unabhängig von der Fläche (Feuer, Himmel) --- */
+  --c-ember-100: #ffd9a8;
+  --c-ember-200: #ffb259;
+  --c-ember-300: #ff8a1f;
+  --c-ember-400: #f2600c;
+  --c-ember-500: #c43c05;
+  --c-ember-600: #7a2202;
+
+  /* --- Typografie --- */
+  /* Archivo hat eine Breiten-Achse: Headlines laufen schmal und wuchtig. */
+  --font-display: "Archivo", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  /* Mono nur für echte Daten: Ticker-Ziffern, Achsen, Quellenvermerke. */
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --t-display: clamp(2.875rem, 11.5vw, 9rem);
+  --t-h2: clamp(2.125rem, 6.6vw, 4.5rem);
+  --t-h3: clamp(1.5rem, 3.4vw, 2.25rem);
+  --t-stat: clamp(3.75rem, 13.5vw, 10rem);
+  --t-quote: clamp(1.5rem, 4.4vw, 2.875rem);
+  --t-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --t-meta: 0.75rem;
+
+  /* --- Raster & Raum --- */
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --max-page: 80rem;
+  --max-measure: 42rem;
+  --header-h: 4rem;
+
+  --space-section: clamp(6rem, 14vw, 12.5rem);
+
+  /* --- Bewegung --- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-reveal: 900ms;
+}
+
+/* --- PAPIER --- */
+[data-surface="paper"] {
+  --c-bg: #efe9de;
+  --c-bg-lift: #e6dfd2;
+  --c-bg-deep: #ffffff;
+
+  --c-ink: #16130f;
+  --c-ink-muted: #4d4740;
+  --c-ink-faint: #655d54;
+
+  --c-line: rgb(22 19 15 / 16%);
+  --c-line-strong: rgb(22 19 15 / 34%);
+
+  --c-accent: #b03806;
+  --c-accent-fill: #c4400a;
+  --c-accent-on-fill: #fdf9f2;
+  --c-chart-1: #c4400a;
+  --c-chart-2: #1f6fa0;
+  --c-pulse-rgb: 196 64 10;
+
+  --c-alert: #b3251a;
+
+  background: var(--c-bg);
+  color: var(--c-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-reveal: 1ms;
+  }
+}

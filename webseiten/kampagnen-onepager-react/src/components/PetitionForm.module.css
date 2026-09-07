@@ -1,0 +1,257 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3.5vw, 2rem);
+  max-width: 34rem;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--c-ink-faint);
+  transition: color 250ms var(--ease-out);
+}
+
+/* Eingaben als reine Schreiblinien — keine Kästen, keine Karten. */
+.input {
+  width: 100%;
+  padding: 0.5rem 0 0.625rem;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--c-line-strong);
+  font-size: 1.0625rem;
+  color: var(--c-ink);
+  transition: border-color 250ms var(--ease-out);
+}
+
+.input:hover {
+  border-bottom-color: var(--c-ink-faint);
+}
+
+.input:focus {
+  outline: none;
+  border-bottom-color: var(--c-accent);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 4px;
+}
+
+.field:focus-within .label {
+  color: var(--c-ink-muted);
+}
+
+.field[data-invalid] .input {
+  border-bottom-color: var(--c-alert);
+}
+
+.input:disabled {
+  opacity: 0.5;
+}
+
+.error {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--c-alert);
+}
+
+/* --- Zustimmung --- */
+
+.consent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  /* Bequeme Trefferfläche auf Touch-Geräten. */
+  padding-block: 0.25rem;
+  font-size: 0.9375rem;
+  color: var(--c-ink-muted);
+  cursor: pointer;
+}
+
+.checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.box {
+  position: relative;
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+  border: 1px solid var(--c-line-strong);
+  transition:
+    border-color 200ms var(--ease-out),
+    background-color 200ms var(--ease-out);
+}
+
+/* Haken aus zwei Rahmenkanten — zuverlässiger als eine Pfad-Grafik. */
+.box::after {
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 34%;
+  width: 28%;
+  height: 54%;
+  border: solid var(--c-accent-on-fill);
+  border-width: 0 2px 2px 0;
+  opacity: 0;
+  transform: rotate(45deg) scale(0.5);
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 220ms var(--ease-out);
+}
+
+.consentLabel:hover .box {
+  border-color: var(--c-ink-faint);
+}
+
+.checkbox:checked + .box {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+}
+
+.checkbox:checked + .box::after {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
+}
+
+.checkbox:focus-visible + .box {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+
+.consent[data-invalid] .box {
+  border-color: var(--c-alert);
+}
+
+/* --- Absenden --- */
+
+.submit {
+  position: relative;
+  align-self: start;
+  padding: 1rem 2rem;
+  border-radius: 2px;
+  background: var(--c-accent-fill);
+  color: var(--c-accent-on-fill);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition:
+    transform 300ms var(--ease-out),
+    box-shadow 300ms var(--ease-out),
+    filter 300ms var(--ease-out);
+}
+
+.submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* --- Bestätigung --- */
+
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 32rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.check {
+  width: 3rem;
+  height: 3rem;
+  fill: none;
+  stroke: var(--c-accent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+
+.checkRing {
+  stroke: var(--c-line-strong);
+  stroke-dasharray: 95;
+  stroke-dashoffset: 95;
+  animation: draw 900ms var(--ease-out) forwards;
+}
+
+.checkMark {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: draw 500ms var(--ease-out) 420ms forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.successTitle {
+  font-size: var(--t-h3);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  animation: success-in 700ms var(--ease-out) 500ms both;
+}
+
+.successBody {
+  font-size: 0.9375rem;
+  color: var(--c-ink-muted);
+  text-wrap: pretty;
+  animation: success-in 700ms var(--ease-out) 640ms both;
+}
+
+@keyframes success-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.75rem, 0);
+  }
+}
+
+@media (width < 34rem) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .submit {
+    align-self: stretch;
+    text-align: center;
+  }
+}

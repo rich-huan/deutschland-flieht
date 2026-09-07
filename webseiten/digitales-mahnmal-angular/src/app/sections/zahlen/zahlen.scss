@@ -1,0 +1,136 @@
+@use 'mixins' as *;
+
+.zn {
+  padding-block: var(--spacing-40) var(--spacing-168);
+}
+
+.zn__kopf {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.16em;
+}
+
+.zn__titel {
+  margin: var(--spacing-60) 0 var(--spacing-96);
+  text-align: center;
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-section-fluid);
+  line-height: var(--leading-section);
+  letter-spacing: -0.009em;
+  color: var(--color-paper);
+  display: flex;
+  flex-direction: column;
+}
+
+.zn__titel-zeile {
+  display: block;
+}
+
+/* --- Raster --------------------------------------------------------------- */
+
+.zn__raster {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-28);
+  margin: 0;
+}
+
+.zn__spalte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-20);
+
+  /* Gestaffelter Auftritt; das Hochzaehlen der Kennzahl startet
+     unabhaengig davon, sobald die Zahl selbst im Bild steht. */
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 640ms var(--ease-gallery),
+    transform 640ms var(--ease-gallery);
+
+  &.ist-sichtbar {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@include motion-reduce {
+  .zn__spalte {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.zn__spalte-titel {
+  @include serif-subheading;
+  margin: 0;
+  color: var(--color-paper);
+  font-size: clamp(18px, 1.5vw, 24px);
+}
+
+/* Kreisrunder Ausschnitt — nach der Vollflaeche die zweite Bildform
+   des Systems. Ohne Rahmen, ohne Schatten. */
+.zn__kreis {
+  width: min(240px, 60%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.zn__wert {
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-medium);
+  font-size: clamp(34px, 3.25vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.009em;
+  color: var(--color-paper);
+  margin: 0;
+}
+
+.zn__label {
+  @include grotesk-label;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 26ch;
+  margin: 0;
+}
+
+.zn__quelle {
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.08em;
+  max-width: 30ch;
+  margin: 0;
+}
+
+.zn__hex {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 1;
+  margin-top: var(--spacing-4);
+}
+
+@include tablet {
+  .zn__raster {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-60);
+  }
+
+  .zn__titel {
+    margin-block: var(--spacing-40) var(--spacing-60);
+  }
+
+  .zn {
+    padding-bottom: var(--spacing-96);
+  }
+}

@@ -1,0 +1,218 @@
+@use 'mixins' as *;
+
+.seq {
+  position: relative;
+  background: var(--surface-ink-room);
+}
+
+.seq__pin {
+  /* Durchmesser des Kreises. Kreis und Kegel leiten ihre Breite beide aus
+     dieser einen Variablen ab, damit der Kegel exakt an den Kreisflanken
+     ansetzt. */
+  --breite: min(440px, 82vw);
+
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* --- Bildebene ------------------------------------------------------------ */
+
+.seq__bilder {
+  position: absolute;
+  inset: 0;
+}
+
+.seq__bild {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-gallery);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.seq__bild--aktiv {
+  opacity: 1;
+}
+
+/* --- Loch -----------------------------------------------------------------
+   Oben ein Kreis fester Groesse, darunter ein Kegel, der sich nach unten
+   oeffnet. Der Kegel setzt genau auf halber Kreishoehe an, wo der Kreis am
+   breitesten ist — dadurch entsteht kein Absatz zwischen beiden.        */
+
+.seq__kegel {
+  position: absolute;
+  /* Vom Kreismittelpunkt bis zum unteren Bildrand. */
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface-ink-room);
+
+  --kegel-unten: 0vw;
+  --kegel-wachs: 0%;
+
+  /* Der senkrechte Hals endet exakt am unteren Scheitel des Kreises.
+     Deshalb haengt er an der Kreisgroesse und nicht an der Hoehe dieses
+     Elements — sonst wandert der Ansatz mit der Fensterhoehe. */
+  --kegel-hals: calc(var(--breite) / 2);
+  --kegel-tiefe: calc(var(--breite) / 2 + var(--kegel-wachs));
+
+  /* Die Oberkante ist exakt so breit wie der Kreis: beide leiten ihre
+     Breite aus derselben Variablen ab. Dadurch sitzt der Ansatz genau an
+     den Flanken des Kreises, unabhaengig von Fensterbreite und
+     Bildlaufleiste.
+
+     Die ersten Punkte bilden ein senkrechtes Stueck bis zum unteren
+     Scheitel des Kreises. Ohne das wuerden die Flanken schon am Aequator
+     auseinanderlaufen und dort als spitze Fluegel seitlich herausstehen —
+     der Kreis wird nach unten hin ja schmaler. Der senkrechte Teil bleibt
+     vollstaendig hinter dem Kreis verborgen; sichtbar wird erst, was
+     darunter aufgeht. */
+  clip-path: polygon(
+    calc(50% - var(--breite) / 2) 0%,
+    calc(50% + var(--breite) / 2) 0%,
+    calc(50% + var(--breite) / 2) var(--kegel-hals),
+    calc(50% + var(--breite) / 2 + var(--kegel-unten)) var(--kegel-tiefe),
+    calc(50% - var(--breite) / 2 - var(--kegel-unten)) var(--kegel-tiefe),
+    calc(50% - var(--breite) / 2) var(--kegel-hals)
+  );
+}
+
+.seq__form {
+  position: absolute;
+  /* Oberkante so gesetzt, dass der Kreis mittig im Bild steht. */
+  top: calc(50% - var(--breite) / 2);
+  left: 50%;
+  width: var(--breite);
+  height: var(--breite);
+  border-radius: 50%;
+  background: var(--surface-ink-room);
+  color: var(--color-paper);
+
+  /* Auftritt beim Hereinscrollen */
+  opacity: 0;
+  transform: translate(-50%, 0) scale(0.9);
+  transition:
+    opacity 700ms var(--ease-gallery),
+    transform 700ms var(--ease-gallery);
+
+  &.ist-sichtbar {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@include motion-reduce {
+  .seq__form {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* --- Karteninhalt --------------------------------------------------------- */
+
+/* Der Inhalt bleibt im kreisrunden Kopf der Form und waechst nicht mit dem
+   Schacht mit. Die Breite ist so gewaehlt, dass die Zeilen auch in der
+   oberen und unteren Haelfte innerhalb der Rundung bleiben. */
+.seq__inhalt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--breite);
+  padding: 0 12%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--spacing-20);
+
+  /* Platz fuer den Scroll-Hinweis am unteren Kreisrand. */
+  padding-bottom: 16%;
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--duration-base) var(--ease-gallery),
+    visibility 0s linear var(--duration-base);
+}
+
+.seq__inhalt--aktiv {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--duration-base) var(--ease-gallery),
+    visibility 0s;
+}
+
+
+.seq__ueberschrift {
+  /* Serif im Karteneinsatz: 34px ist die kleinste zulaessige Display-Groesse. */
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: clamp(26px, 2.125vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.001em;
+  margin: 0;
+  max-width: 16ch;
+  text-wrap: balance;
+}
+
+.seq__text {
+  @include grotesk-label;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 32ch;
+  margin: 0;
+}
+
+/* --- Scroll-Indikator ----------------------------------------------------- */
+
+/* Sitzt zentriert im unteren Drittel des kreisrunden Kopfes. */
+.seq__scroll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--breite) * 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-16);
+  color: rgba(255, 255, 255, 0.7);
+  transition: opacity var(--duration-base) var(--ease-gallery);
+}
+
+.seq__balken {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.seq__segment {
+  width: 22px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+  transition: background var(--duration-base) var(--ease-gallery);
+}
+
+.seq__segment--aktiv {
+  background: var(--color-paper);
+}
+
+@include mobile {
+  .seq__karte {
+    padding: var(--spacing-20);
+  }
+
+  .seq__text {
+    max-width: none;
+  }
+}

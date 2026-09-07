@@ -1,0 +1,46 @@
+<section class="zn surface-ink inset" aria-labelledby="zn-titel">
+  <!-- Kleine Labels in den gegenueberliegenden Ecken, wie Museums-Wandtexte. -->
+  <div class="zn__kopf">
+    <span class="zn__ecklabel t-micro">{{ sektion.labelLinks }}</span>
+    <span class="zn__ecklabel t-micro">{{ sektion.labelRechts }}</span>
+  </div>
+
+  <h2 id="zn-titel" class="zn__titel">
+    <span class="zn__titel-zeile">{{ sektion.titelZeile1 }}</span>
+    <span class="zn__titel-zeile">{{ sektion.titelZeile2 }}</span>
+  </h2>
+
+  <ul class="zn__raster">
+    @for (v of vignetten; track v.id; let i = $index) {
+      <li class="zn__spalte" appReveal [appRevealDelay]="i * 150">
+        <h3 class="zn__spalte-titel">{{ v.titel }}</h3>
+
+        <!-- Kreisrunder Ausschnitt: nach der Vollflaeche die zweite
+             Bildform des Systems. -->
+        <div class="zn__kreis">
+          <img [src]="v.bild.pfad" [alt]="v.bild.alt" loading="lazy" decoding="async" />
+        </div>
+
+        <p class="zn__wert"><app-zaehlwert [wert]="v.kennzahl.wert" /></p>
+        <p class="zn__label">{{ v.kennzahl.label }}</p>
+
+        <!-- Beleg direkt an der Zahl. Solange nicht geprueft, sagt die Seite
+             das offen, statt eine Sicherheit vorzutaeuschen. -->
+        <p class="zn__quelle t-micro">
+          @if (v.kennzahl.geprueft) {
+            {{ v.kennzahl.quelle }}, {{ v.kennzahl.jahr }}
+          } @else {
+            Platzhalter — Quelle: {{ v.kennzahl.quelle }}
+          }
+        </p>
+
+        <!-- Hexagon als Sekundaergeometrie des Systems -->
+        <svg class="zn__hex" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <polygon points="12,2 21,7 21,17 12,22 3,17 3,7" />
+          <line x1="12" y1="9" x2="12" y2="15" />
+          <line x1="9" y1="12" x2="15" y2="12" />
+        </svg>
+      </li>
+    }
+  </ul>
+</section>

@@ -1,0 +1,121 @@
+/* =========================================================================
+   Design Tokens — "Deutschland flieht."
+   Renaissance-Galerie auf Putty-Papier.
+   Werte 1:1 aus der Design-Vorgabe. Fluide Zusaetze sind als solche markiert.
+   ========================================================================= */
+
+:root {
+  /* --- Farben ------------------------------------------------------------ */
+  --color-putty: #c4c3b6;
+  --color-ink: #000000;
+  --color-bone: #e7e5e4;
+  --color-chalk: #ebebeb;
+  --color-vellum: #dfdcd5;
+  --color-graphite: #595855;
+  --color-ash: #808080;
+  --color-paper: #ffffff;
+
+  /* --- Schriftfamilien ---------------------------------------------------
+     Davinci -> Playfair Display (in der Vorgabe als Substitut genannt)
+     Helvetica Now -> Inter (in der Vorgabe als Substitut genannt)
+     Beide selbst gehostet, damit die Seite ohne Netz laeuft.            */
+  --font-davinci: 'Davinci', 'Playfair Display', 'Canela', 'Tiempos Headline',
+    Georgia, 'Times New Roman', serif;
+  --font-helvetica-now: 'Helvetica Now', 'Inter', 'Neue Haas Grotesk', 'Söhne',
+    'Helvetica Neue', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+
+  /* --- Typo-Skala (Sollwerte der Vorgabe) -------------------------------- */
+  --text-body-sm: 15px;
+  --leading-body-sm: 1.5;
+  --text-subheading: 22px;
+  --leading-subheading: 1.33;
+  --tracking-subheading: -0.11px;
+  --text-heading-sm: 26px;
+  --leading-heading-sm: 1.33;
+  --tracking-heading-sm: -0.13px;
+  --text-heading: 43px;
+  --leading-heading: 1.1;
+  --tracking-heading: -0.215px;
+  --text-heading-lg: 52px;
+  --leading-heading-lg: 1;
+  --tracking-heading-lg: -0.47px;
+  --text-display: 374px;
+  --leading-display: 0.84;
+  --tracking-display: -3.37px;
+
+  /* Mikrotexte der Vorgabe (Labels, SCROLL-Marker, Nav) */
+  --text-micro: 9px;
+  --text-label: 12px;
+  --text-body: 16px;
+
+  /* --- Fluide Ableitungen (eigene Ergaenzung) ----------------------------
+     Die Referenz ist bei 1600px Breite aufgenommen. Die vw-Werte sind so
+     gewaehlt, dass bei exakt 1600px der Sollwert der Vorgabe herauskommt:
+     374 / 1600 = 23.375vw, 94 / 1600 = 5.875vw, 52 / 1600 = 3.25vw.
+     Dadurch bleibt die Wortmarke auf jeder Breite am Viewport beschnitten. */
+  --text-display-fluid: clamp(92px, 23.375vw, 374px);
+  --text-section-fluid: clamp(44px, 5.875vw, 94px);
+  --text-heading-lg-fluid: clamp(32px, 3.25vw, 52px);
+  --text-heading-fluid: clamp(28px, 2.6875vw, 43px);
+
+  /* Section-Headline der Vorgabe: 94px / 0.84 / -0.85px */
+  --text-section: 94px;
+  --leading-section: 0.84;
+  --tracking-section: -0.85px;
+
+  /* --- Schriftgewichte ---------------------------------------------------- */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  /* --- Spacing ------------------------------------------------------------ */
+  --spacing-unit: 4px;
+  --spacing-4: 4px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-40: 40px;
+  --spacing-52: 52px;
+  --spacing-60: 60px;
+  --spacing-96: 96px;
+  --spacing-168: 168px;
+
+  /* --- Layout ------------------------------------------------------------- */
+  --section-gap: 80px;
+  --card-padding: 24px;
+  --element-gap: 6px;
+  --page-inset: var(--spacing-20);
+
+  /* --- Radien ------------------------------------------------------------- */
+  --radius-sm: 2px;
+  --radius-lg: 9px;
+  --radius-3xl: 28.8px;
+  --radius-cards: 9px;
+  --radius-links: 2px;
+  --radius-buttons: 28.8px;
+
+  /* --- Surfaces ----------------------------------------------------------- */
+  --surface-putty-canvas: #c4c3b6;
+  --surface-bone-card: #e7e5e4;
+  --surface-chalk-footer: #ebebeb;
+  /* Kein reines Schwarz: ein sehr dunkles, warmes Anthrazit nimmt den
+     dunklen Sektionen die Haerte und passt zur warmen Palette der hellen
+     Flaechen. --color-ink bleibt fuer Text und Linien echtes Schwarz. */
+  --surface-ink-room: #1a1816;
+
+  /* --- Bewegung (eigene Ergaenzung) --------------------------------------
+     Flach und ruhig, passend zum Galerie-Charakter. Keine Bounce-Kurven.  */
+  --ease-gallery: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-slow: 900ms;
+  --duration-base: 480ms;
+  --duration-fast: 220ms;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --section-gap: 60px;
+    --page-inset: var(--spacing-16);
+  }
+}

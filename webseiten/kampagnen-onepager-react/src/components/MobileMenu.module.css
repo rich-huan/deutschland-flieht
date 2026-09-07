@@ -1,0 +1,110 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  visibility: hidden;
+  opacity: 0;
+  background: var(--c-bg);
+  transition:
+    opacity 400ms var(--ease-out),
+    visibility 0s linear 400ms;
+}
+
+.overlay[data-open] {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 400ms var(--ease-out),
+    visibility 0s;
+}
+
+.panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 6vw, 3rem);
+  height: 100%;
+  max-width: var(--max-page);
+  margin-inline: auto;
+  padding: 1.125rem var(--gutter) clamp(2.5rem, 8vh, 4rem);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.close {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--c-accent);
+  padding: 0.5rem 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+}
+
+/* Jeder Eintrag läuft mit eigener Verzögerung ein (inline gesetzt). */
+.list li {
+  opacity: 0;
+  transform: translate3d(0, 1.5rem, 0);
+  transition:
+    opacity 550ms var(--ease-out),
+    transform 550ms var(--ease-out);
+}
+
+.overlay[data-open] .list li {
+  opacity: 1;
+  transform: none;
+}
+
+.link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: clamp(0.75rem, 2.4vh, 1.125rem);
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 88;
+  font-size: clamp(1.75rem, 8vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--c-ink-muted);
+  transition: color 250ms var(--ease-out);
+}
+
+.link:hover,
+.link[aria-current] {
+  color: var(--c-ink);
+}
+
+.cta {
+  margin-top: auto;
+  padding: 1.125rem;
+  border-radius: 2px;
+  background: var(--c-accent-fill);
+  color: var(--c-accent-on-fill);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (width >= 62rem) {
+  .overlay {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list li {
+    transition-delay: 0ms !important;
+  }
+}

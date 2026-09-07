@@ -1,0 +1,57 @@
+.reveal {
+  /* Der Container selbst bleibt unangetastet — animiert werden die Teile. */
+  display: block;
+}
+
+.words .parts {
+  display: inline;
+}
+
+/* Wortweise: die Maske bleibt inline, damit der Satz normal umbricht. */
+.words .mask {
+  display: inline-block;
+  /* Überhänge von Ober- und Unterlängen dürfen nicht abgeschnitten werden. */
+  overflow: clip;
+  overflow-clip-margin: 0.35em;
+  vertical-align: bottom;
+}
+
+.lines .parts {
+  display: block;
+}
+
+.lines .mask {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+}
+
+.part {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.9em, 0);
+  transition:
+    opacity 800ms var(--ease-out) var(--part-delay, 0ms),
+    transform 900ms var(--ease-out) var(--part-delay, 0ms);
+}
+
+.reveal[data-visible] .part {
+  opacity: 1;
+  transform: none;
+}
+
+/* Ohne JavaScript-Beobachtung bleibt der Text sichtbar. */
+@media (scripting: none) {
+  .part {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .part {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

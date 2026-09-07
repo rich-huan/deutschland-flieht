@@ -1,0 +1,107 @@
+.skyline {
+  position: absolute;
+  inset: auto 0 0;
+  height: clamp(7.5rem, 21vh, 15rem);
+  pointer-events: none;
+  /* Die Stadt sitzt hinter dem Inhalt, aber vor Glut und Horizontlicht. */
+  z-index: 0;
+}
+
+.far {
+  height: clamp(5rem, 13vh, 9rem);
+  opacity: 0.5;
+}
+
+.layer {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Ferne Ebene: kühl, diesig, leicht unscharf. */
+.layer[data-depth="0"] {
+  height: 62%;
+  fill: #141b24;
+  opacity: 0.55;
+  filter: blur(1.3px);
+}
+
+/* Mittlere Ebene: die Industrie. */
+.layer[data-depth="1"] {
+  height: 84%;
+  fill: #0e0d0c;
+}
+
+/* Vordere Ebene: fast schwarz, mit Licht in den Fenstern. */
+.layer[data-depth="2"] {
+  height: 100%;
+  fill: #050404;
+}
+
+.stripe {
+  fill: #1e1b18;
+}
+
+.window {
+  fill: var(--c-ember-200);
+  opacity: 0.3;
+}
+
+.flicker {
+  animation: window-flicker 5.5s steps(1, end) infinite;
+}
+
+@keyframes window-flicker {
+  0%,
+  46%,
+  52%,
+  100% {
+    opacity: 0.34;
+  }
+  48% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.52;
+  }
+}
+
+/* --- Rauch aus den Schornsteinen --- */
+
+.smoke {
+  /* Die Fahnen starten am Fuß und werden per Animation nach oben getragen. */
+  transform: translateY(180px);
+}
+
+.puff {
+  opacity: 0;
+  animation: smoke-rise 7.8s linear infinite;
+}
+
+@keyframes smoke-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.35);
+  }
+  18% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(34px, -230px) scale(1.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puff {
+    /* Ohne Bewegung bleibt nur eine ruhige Dunstfahne stehen. */
+    opacity: 0.16;
+    transform: translate(14px, -110px) scale(1.2);
+    animation: none;
+  }
+
+  .flicker {
+    animation: none;
+  }
+}

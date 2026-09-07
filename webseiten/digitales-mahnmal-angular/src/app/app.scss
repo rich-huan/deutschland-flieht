@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  /* Der Header liegt absolut ueber dem Hero, deshalb braucht die Huelle
+     einen eigenen Stacking-Kontext. */
+  position: relative;
+}
+
+main:focus {
+  outline: none;
+}

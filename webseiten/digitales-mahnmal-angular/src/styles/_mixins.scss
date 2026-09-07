@@ -1,0 +1,119 @@
+/* =========================================================================
+   Mixins — Breakpoints und wiederkehrende Typo-Rollen
+   Ueber stylePreprocessorOptions.includePaths in jeder Komponente nutzbar:
+   @use 'mixins' as *;
+   ========================================================================= */
+
+/* --- Breakpoints ---------------------------------------------------------- */
+@mixin until($bp) {
+  @media (max-width: #{$bp - 1px}) {
+    @content;
+  }
+}
+
+@mixin from($bp) {
+  @media (min-width: #{$bp}) {
+    @content;
+  }
+}
+
+$bp-sm: 600px;
+$bp-md: 900px;
+$bp-lg: 1200px;
+
+@mixin mobile {
+  @include until($bp-sm) {
+    @content;
+  }
+}
+@mixin tablet {
+  @include until($bp-md) {
+    @content;
+  }
+}
+@mixin desktop {
+  @include from($bp-lg) {
+    @content;
+  }
+}
+
+/* --- Bewegung ------------------------------------------------------------- */
+/* Alle Animationen der Seite laufen durch diesen Mixin, damit
+   prefers-reduced-motion genau an einer Stelle respektiert wird. */
+@mixin motion-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+@mixin motion-reduce {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+/* --- Typo-Rollen ---------------------------------------------------------- */
+/* Serif = "Momente". Nie unter 34px einsetzen (Vorgabe: Davinci ist
+   Display-only). Grotesk = "Systeme", Bereich 9-26px. */
+
+@mixin serif-display {
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-display-fluid);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+@mixin serif-section {
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-section-fluid);
+  line-height: var(--leading-section);
+  letter-spacing: var(--tracking-section);
+}
+
+@mixin serif-heading-lg {
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-heading-lg-fluid);
+  line-height: var(--leading-heading-lg);
+  letter-spacing: var(--tracking-heading-lg);
+}
+
+@mixin serif-subheading {
+  font-family: var(--font-davinci);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
+  letter-spacing: var(--tracking-subheading);
+}
+
+@mixin grotesk-body {
+  font-family: var(--font-helvetica-now);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+@mixin grotesk-label {
+  font-family: var(--font-helvetica-now);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-label);
+  line-height: 1.25;
+}
+
+@mixin grotesk-micro {
+  font-family: var(--font-helvetica-now);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-micro);
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@mixin grotesk-stat {
+  font-family: var(--font-helvetica-now);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-body);
+  line-height: 1.5;
+}

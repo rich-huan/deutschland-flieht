@@ -1,0 +1,53 @@
+<section class="seq" [style.height]="hoehe()" aria-labelledby="seq-titel">
+  <h2 id="seq-titel" class="sr-only">Wie die Abwanderung verläuft</h2>
+
+  <div class="seq__pin">
+    <!-- Bildebene: alle Gemaelde liegen uebereinander und werden
+         gekreuzblendet. Sie fuellen die Flaeche randlos aus. -->
+    <div class="seq__bilder">
+      @for (schritt of schritte; track schritt.id; let i = $index) {
+        <div class="seq__bild" [class.seq__bild--aktiv]="aktiv() === i">
+          <img
+            [src]="schritt.bild.pfad"
+            [alt]="schritt.bild.alt"
+            [attr.loading]="i === 0 ? null : 'lazy'"
+            decoding="async"
+          />
+        </div>
+      }
+    </div>
+
+    <!-- Karte mit abgeschraegten Ecken, mittig ueber dem Bild.
+         Beim letzten Schritt laeuft ihre Unterkante zu einer Spitze nach
+         unten zusammen: die Flaeche selbst wird zum Abwaertspfeil. -->
+    <!-- Der Kegel setzt an der breitesten Stelle des Kreises an und oeffnet
+         sich beim Scrollen nach unten, bis er ueber den Bildrand
+         hinausreicht: das Loch faellt nach unten und verschluckt die
+         gesamte Breite. -->
+    <div
+      class="seq__kegel"
+      [style.--kegel-unten]="kegelUnten()"
+      [style.--kegel-wachs]="kegelWachs()"
+      aria-hidden="true"
+    ></div>
+
+    <article class="seq__form" appReveal>
+      @for (schritt of schritte; track schritt.id; let i = $index) {
+        <div class="seq__inhalt" [class.seq__inhalt--aktiv]="aktiv() === i" [attr.aria-hidden]="aktiv() !== i">
+          <h3 class="seq__ueberschrift">{{ schritt.ueberschrift }}</h3>
+          <p class="seq__text">{{ schritt.text }}</p>
+        </div>
+      }
+
+      <div class="seq__scroll">
+        <span class="t-micro">Scroll</span>
+        <span class="seq__balken" aria-hidden="true">
+          @for (schritt of schritte; track schritt.id; let i = $index) {
+            <span class="seq__segment" [class.seq__segment--aktiv]="aktiv() >= i"></span>
+          }
+        </span>
+      </div>
+
+    </article>
+  </div>
+</section>

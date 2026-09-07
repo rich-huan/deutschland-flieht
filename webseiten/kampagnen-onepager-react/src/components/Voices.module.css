@@ -1,0 +1,47 @@
+.section {
+  padding-block: var(--space-section);
+  border-top: 1px solid var(--c-line);
+}
+
+.list {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+.item + .item .figure {
+  border-top: 1px solid var(--c-line);
+}
+
+.figure {
+  margin: 0;
+  padding-block: clamp(2.5rem, 7vw, 4.25rem);
+  text-align: center;
+}
+
+.quote {
+  margin: 0;
+  font-size: var(--t-quote);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* Deutsche Anführungszeichen kommen aus dem Stylesheet, nicht aus dem Text. */
+.quote p::before {
+  content: "\201E";
+  color: var(--c-accent);
+}
+
+.quote p::after {
+  content: "\201C";
+  color: var(--c-accent);
+}
+
+.caption {
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: var(--t-meta);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--c-ink-faint);
+}

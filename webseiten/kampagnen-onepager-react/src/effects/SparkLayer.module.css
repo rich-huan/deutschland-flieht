@@ -1,0 +1,45 @@
+.canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 90; /* über dem Inhalt, aber unter dem Filmkorn (z-index 100) */
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: opacity 600ms var(--ease-out);
+}
+
+/* Über den Papier-Kapiteln verlischt die Glut. */
+.canvas[data-dimmed] {
+  opacity: 0;
+}
+
+/* Warmes Licht hinter dem Inhalt — folgt dem Zeiger mit leichter Verzögerung. */
+.glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 34rem;
+  height: 34rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+  background:
+    radial-gradient(
+      closest-side,
+      rgb(255 146 54 / 15%),
+      rgb(255 122 40 / 6%) 45%,
+      rgb(255 122 40 / 0%) 78%
+    ),
+    radial-gradient(
+      closest-side,
+      rgb(255 214 140 / 10%),
+      rgb(255 214 140 / 0%) 32%
+    );
+}
+
+@media (pointer: coarse) {
+  .glow {
+    display: none;
+  }
+}

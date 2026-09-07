@@ -1,0 +1,173 @@
+/* =========================================================================
+   Basis-Typografie und wiederverwendbare Bausteine
+   ========================================================================= */
+
+@use 'mixins' as *;
+
+body {
+  background: var(--surface-putty-canvas);
+  color: var(--color-ink);
+  @include grotesk-body;
+}
+
+/* --- Sektions-Flaechen ---------------------------------------------------
+   Die Seite lebt von harten Schnitten zwischen hell und dunkel.
+   Keine Verlaeufe, keine Schatten - nur Flaechenwechsel.               */
+
+.surface-putty {
+  background: var(--surface-putty-canvas);
+  color: var(--color-ink);
+}
+
+.surface-bone {
+  background: var(--surface-bone-card);
+  color: var(--color-ink);
+}
+
+.surface-chalk {
+  background: var(--surface-chalk-footer);
+  color: var(--color-ink);
+}
+
+.surface-ink {
+  background: var(--surface-ink-room);
+  color: var(--color-paper);
+}
+
+/* --- Typo-Hilfsklassen ---------------------------------------------------- */
+
+.t-display {
+  @include serif-display;
+}
+.t-section {
+  @include serif-section;
+}
+.t-heading-lg {
+  @include serif-heading-lg;
+}
+.t-subheading {
+  @include serif-subheading;
+}
+.t-body {
+  @include grotesk-body;
+}
+.t-label {
+  @include grotesk-label;
+}
+.t-micro {
+  @include grotesk-micro;
+}
+.t-stat {
+  @include grotesk-stat;
+}
+
+/* Kursive Zeile innerhalb einer Serif-Headline - das wiederkehrende
+   Stilmittel der Vorlage ("Real YIELD", "on BITCOIN"). */
+.t-italic {
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
+}
+
+.t-muted {
+  color: var(--color-graphite);
+}
+
+/* --- Pill-Button ---------------------------------------------------------
+   Genau ein gefuellter Button pro Viewport. Schwarz, kompakt, ohne Schatten. */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--element-gap);
+  padding: 9px 17px;
+  border-radius: var(--radius-buttons);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  @include grotesk-label;
+  border: 1px solid var(--color-ink);
+  transition: background var(--duration-fast) var(--ease-gallery),
+    color var(--duration-fast) var(--ease-gallery);
+
+  &:hover {
+    background: transparent;
+    color: var(--color-ink);
+  }
+}
+
+/* Auf dunklen Flaechen dreht sich der Button um. */
+.surface-ink .pill,
+.pill--inverse {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border-color: var(--color-paper);
+
+  &:hover {
+    background: transparent;
+    color: var(--color-paper);
+  }
+}
+
+/* --- Ghost-Link ----------------------------------------------------------- */
+
+.ghost-link {
+  @include grotesk-label;
+  border-radius: var(--radius-links);
+  text-underline-offset: 3px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* --- Layout-Helfer -------------------------------------------------------- */
+
+.section {
+  padding-block: var(--section-gap);
+}
+
+.inset {
+  padding-inline: var(--page-inset);
+}
+
+/* Screenreader-only, u.a. fuer den Skip-Link und Sektions-Ueberschriften,
+   die visuell in der Wortmarke aufgehen. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  transform: translateY(-120%);
+  padding: 12px 18px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  @include grotesk-label;
+
+  &:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+/* --- Hairline ------------------------------------------------------------
+   Vellum auf hell, halbtransparentes Paper auf dunkel. Immer 1px. */
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--color-vellum);
+}
+
+.surface-ink .hairline {
+  border-top-color: rgba(255, 255, 255, 0.18);
+}

@@ -1,0 +1,170 @@
+.masthead {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  /* Über dem Hero durchsichtig — das Papier kommt erst beim Scrollen. */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 350ms var(--ease-out),
+    border-color 350ms var(--ease-out),
+    color 350ms var(--ease-out);
+}
+
+.masthead[data-detached] {
+  border-bottom-color: var(--c-line);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  height: var(--header-h);
+  max-width: var(--max-page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.wordmark {
+  flex: none;
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 92;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.dot {
+  color: var(--c-accent);
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+  list-style: none;
+  padding: 0;
+}
+
+/* Lesbare Textschrift statt winziger Versal-Mono. */
+.link {
+  position: relative;
+  display: block;
+  padding-block: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--c-ink-muted);
+  transition: color 200ms var(--ease-out);
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0.25rem 0;
+  height: 1px;
+  background: currentcolor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 280ms var(--ease-out);
+}
+
+.link:hover,
+.link[aria-current] {
+  color: var(--c-ink);
+}
+
+.link[aria-current] {
+  color: var(--c-accent);
+}
+
+.link:hover::after,
+.link:focus-visible::after,
+.link[aria-current]::after {
+  transform: scaleX(1);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: none;
+}
+
+.cta {
+  padding: 0.625rem 1.125rem;
+  border-radius: 2px;
+  background: var(--c-accent-fill);
+  color: var(--c-accent-on-fill);
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 200ms var(--ease-out);
+}
+
+.cta:hover {
+  background: var(--c-ember-500);
+  color: #fdf9f2;
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  align-items: flex-end;
+}
+
+.burger span[aria-hidden] {
+  display: block;
+  height: 1.5px;
+  background: currentcolor;
+  transition: width 260ms var(--ease-out);
+}
+
+.burger span[aria-hidden]:first-child {
+  width: 1.25rem;
+}
+
+.burger span[aria-hidden]:nth-child(2) {
+  width: 0.875rem;
+}
+
+.burger:hover span[aria-hidden]:nth-child(2) {
+  width: 1.25rem;
+}
+
+.progress {
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 2px;
+  background: var(--c-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@media (width < 60rem) {
+  .nav {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+}
+
+@media (width < 26rem) {
+  .cta {
+    display: none;
+  }
+}

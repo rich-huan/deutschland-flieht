@@ -1,0 +1,102 @@
+.odometer {
+  display: inline-block;
+  /* Die Mono hat feste Ziffernbreiten — genau das braucht eine Fallblattanzeige. */
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.display {
+  font-size: clamp(2.875rem, 12vw, 6rem);
+  --cell-height: 1.24em;
+  --digit-width: 0.6em;
+}
+
+.inline {
+  font-size: clamp(1.75rem, 5.5vw, 2.75rem);
+  --cell-height: 1.3em;
+  --digit-width: 0.61em;
+}
+
+.reels {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.digit {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: var(--digit-width);
+  height: var(--cell-height);
+  overflow: hidden;
+  /* Ein- und auslaufende Ziffern verschwinden weich statt hart abzuschneiden. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+}
+
+/* Feine Trennkante wie bei einer Fallblattanzeige. */
+.digit::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 1px;
+  background: rgb(0 0 0 / 40%);
+  pointer-events: none;
+}
+
+.reel {
+  display: block;
+  transform: translate3d(0, calc(var(--reel-position) * -10%), 0);
+  transition: transform 1s var(--ease-out);
+  transition-delay: var(--reel-delay, 0ms);
+}
+
+.cell {
+  display: grid;
+  place-items: center;
+  height: var(--cell-height);
+}
+
+.separator {
+  width: 0.24em;
+}
+
+/* Glut-Impuls hinter der Zahl bei jeder Aktualisierung. */
+.pulse {
+  position: absolute;
+  inset: -25% -4%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgb(var(--c-pulse-rgb) / 42%),
+    rgb(var(--c-pulse-rgb) / 0%) 72%
+  );
+  filter: blur(26px);
+  opacity: 0;
+  animation: odometer-pulse 1.5s var(--ease-out) 1;
+}
+
+@keyframes odometer-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  16% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
